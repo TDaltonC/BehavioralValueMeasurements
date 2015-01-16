@@ -8,7 +8,7 @@ if exist('subjID','var') == 0;
     subjID = 1;
 end
 if exist('input','var') == 0;
-    input = 't';
+    input = 'k';
 end
 if input == 't'; % on a tablet we need to disable the screen synch test becuase . . .  who knows
     Screen('preference', 'SkipSyncTests',1);
