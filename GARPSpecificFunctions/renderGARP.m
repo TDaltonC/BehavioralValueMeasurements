@@ -42,6 +42,7 @@ function [ output_args ] = renderGARP( item1, item2, item3, item4, amountOfItem1
     end
     
     if exist('w','var') == 0;
+        Screen('Preference', 'SkipSyncTests', 1);
         w = Screen(screenNumber, 'OpenWindow',[],[],[],[]);
     end
     
@@ -509,9 +510,9 @@ end
 v = cat(1,leftPositions,topPositions,rightPositions,bottomPositions);
 
     Screen('DrawTextures',w,draw,[],v)
-%      Screen('Flip',w);
-%      KbWait
-%      Screen('CloseAll');
+      Screen('Flip',w);
+      KbWait
+      Screen('CloseAll');
 
 end
 
