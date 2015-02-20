@@ -1,4 +1,4 @@
-function [ output_args ] = renderGARP( item1, item2, item3, item4, amountOfItem1, amountOfItem2, amountOfItem3, amountOfItem4, w )
+function [ output_args ] = renderGARP( itemsLeft, itemsRight,flip, w )
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
     screenNumber = max(Screen('Screens'));
@@ -9,36 +9,15 @@ function [ output_args ] = renderGARP( item1, item2, item3, item4, amountOfItem1
     
     %% Defaults --- If input arguments are not provided, these gives the default values
     
-    if exist('item1','var') == 0;
-        item1 = imread('vjuice.jpg');
+    if exist('itemsLeft','var') == 0;
+        itemLeft{1} = imread('vjuice.jpg');
     end
-    if exist('item2','var') == 0;
-        item2 = imread('icedtea.jpg');
-    end
-    if exist('item3','var') == 0;
-        item3 = imread('pretzel.jpg');
-    end
-    if exist('item4','var') == 0;
-        item4 = imread('milk.jpg');
+    if exist('itemsRight','var') == 0;
+        itemsRight{1} = imread('icedtea.jpg');
     end
     
-    
-    
-    
-    if exist('amountOfItem1','var') == 0; % If 'itemitemsOnLeft' doesn't exist  . . . 
-        amountOfItem1 = 1;                % Create it and set it equal to 3 (default)
-    end
-
-    if exist('amountOfItem2','var') == 0; 
-        amountOfItem2 = 5;
-    end
-    
-    if exist('amountOfItem3','var') == 0; % If 'itemitemsOnLeft' doesn't exist  . . . 
-        amountOfItem3 = 5;                % Create it and set it equal to 3 (default)
-    end
-
-    if exist('amountOfItem4','var') == 0; 
-        amountOfItem4 = 6;
+    if exist('flip','var') == 0; % If 'itemitemsOnLeft' doesn't exist  . . . 
+        flip = 0;                % Create it and set it equal to 3 (default)
     end
     
     if exist('w','var') == 0;
@@ -49,10 +28,20 @@ function [ output_args ] = renderGARP( item1, item2, item3, item4, amountOfItem1
     grey = imread('grey.jpg');
     
     %% Make all of the tesxtures
-    item1t = Screen('MakeTexture',w,item1); 
-    item2t = Screen('MakeTexture',w,item2);
-    item3t = Screen('MakeTexture',w,item3); 
-    item4t = Screen('MakeTexture',w,item4);
+    %Textures for the first group
+    leftTextures = {};
+    for i = 1: numel(itemsLeft)
+        tempTexture = Screen('MakeTexture',w,itemsLeft{i});
+        leftTextures = {leftTextures, tempTexture};
+    end
+    %Textures for the second group
+    rightTextures = {};
+    for i = 1: numel(itemsRight)
+        tempTexture = Screen('MakeTexture',w,itemsRight{i});
+        rightTextures = {rightTextures, tempTexture};
+    end
+    
+    %%placeholders
     blackt = Screen('MakeTexture',w,black);
     greyt = Screen('MakeTexture',w,grey);
     
@@ -71,14 +60,39 @@ function [ output_args ] = renderGARP( item1, item2, item3, item4, amountOfItem1
     
     % EVerything below here is codded in terms of the numbers above
     
-    pwl1= centerw - eccen;
-    pwl2= pwl1 - itemw;
-    pwl3= pwl2 - gutterw;
-    pwl4= pwl3 - itemw;
-    pwl5= pwl4 - gutterw;
-    pwl6= pwl5 - itemw;
-    pwl7= pwl6 - gutterw;
-    pwl8= pwl7 - itemw;
+    leftPositions = [];
+    rightPositions = [];
+    topPositions = centerh - devLineHeight/2;
+    bottomPositions = centerh + devLineHeight/2;
+    
+    %%Do all the math for the lines for each item
+    %%starting with the ones on the left side of the screen
+    currentRightSide = centerw - eccen;
+    for i = 1: numel(leftTextures)
+        %Set border
+        rightBorder = currentRightSide;
+        leftBorder = rightBorder - itemw;
+        %Reset for next item
+        currentRightSide = leftBorder - gutterw;
+        %Add to positions array
+        leftPositions = [leftPositions, leftBorder];
+        rightPositions = [rightPositions, rightBorder];
+    end
+    
+    %%Do all the math for the lines for each item
+    %%right side of the screen
+    currentLeftSide = centerw + eccen;
+    for i = 1: numel(rightTextures)
+        %Set border
+        leftBorder = currentLeftSide;
+        rightBorder = leftBorder + itemw;
+        %Reset for next item
+        currentLeftSide = rightBorder + gutterw;
+        %Add to positions array
+        leftPositions = [leftPositions, leftBorder];
+        rightPositions = [rightPositions, rightBorder];
+    end
+    
     
     pwr1= centerw + eccen;
     pwr2= pwr1 + itemw;
@@ -99,11 +113,7 @@ function [ output_args ] = renderGARP( item1, item2, item3, item4, amountOfItem1
 % These are here so that the cat()'s will have something to grab on to.
 
     draw = [];
-    leftPositions = [];
-    topPositions = [];
-    rightPositions = [];
-    bottomPositions = [];
-
+    
 % The line that devides the the screen in half    
     
      draw = cat(1,draw,blackt);
