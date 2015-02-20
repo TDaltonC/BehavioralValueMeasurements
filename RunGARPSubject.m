@@ -12,10 +12,26 @@ function [ output_args ] = RunGARPSubject( subjID, allItems, neighborAmt, runs, 
 %input - tells you if the subject will be using a keyboard('k'), a mouse ('m'), or a windows 8 tablet('t')
 %***************************
 
-%% Settings
+%% Defaults
 % Default for subjID is 1. This only kicks in if no subject ID is given.
 if exist('subjID','var') == 0;
     subjID = 1;
+end
+if exist('allItems','var') == 0;
+    allItems = {};
+    allItems{1} = 1;
+    allItems{2} = [2,3];
+    allItems{3} = 4;
+    allItems{4} = 5;
+    allItems{5} = [6,7];
+    allItems{6} = [8,9];
+end
+
+if exist('neightborAmt','var') == 0;
+    neighborAmt = 2;
+end
+if exist('runs','var') == 0;
+    runs = 2;
 end
 if exist('input','var') == 0;
     input = 'k'; %keyboard
@@ -39,8 +55,8 @@ for i = 1: initLength
     for n = 1: neighborAmt
         if i+n <= initLength
             tempArray = {};
-            tempArray{1} = initItems{i};
-            tempArray{2} = initItems(i+n);
+            tempArray{1,1} = initItems{i};
+            tempArray{1,2} = initItems(i+n);
             pairedArray{pairedIndex} = {tempArray};
             pairedIndex = pairedIndex + 1;
         end
@@ -54,9 +70,9 @@ allTrialsLength = pairedLength * runs; %The total number of trials that will be 
 %add the paired array as many times as there are runs
 allTrialsIndex = 1;
 for i = 1: runs
-    for n = i: pairedLenth
+    for n = 1: pairedLength
         allTrialsArray{allTrialsIndex} = pairedArray{n};
-        allTrialsArray = allTrialsArray + 1;
+        allTrialsIndex = allTrialsIndex + 1;
     end
 end
 
@@ -83,12 +99,12 @@ if exist('w','var') == 0;
 end
 %% Saving the settings
 
-settings.recordfolde        = 'records';
+settings.recordfolder        = 'records';
 settings.subjID             = subjID;
 settings.flipLR             = flipLR; %if '0', don't flip. If '1' flip the left basker for the right basket
 settings.neighbors          = neighborAmt;
 settings.runs               = runs;
-settings.taskCombiniations  = pairedArray;
+settings.taskCombiniations  = pairedArray; 
 settings.taskOrder          = trialOrder;
 settings.taskAll            = orderedTrialsArray;
 
@@ -96,12 +112,14 @@ settings.screenNumber       = screenNumber;
 settings.width              = width;
 settings.height             = height;
 
-% if the records folder doesn't exist, create it. 
-mkdir(settings.recordfolder);
+% if the records folder doesn't exist, create it.
+if settings.recordfolder
+    mkdir(settings.recordfolder);
+end
 % creat the file name for this run of this subject
 recordname = [settings.recordfolder '/' num2str(subjID) '_' datestr(now,'yyyymmddTHHMMSS') '.mat'];
 % Save the settings (the results are saved later)
-save (recordname, 'settings')
+save (recordname, 'settings');
 % Restrict the keys that can be used for the Kb commands [ALL KEYS ARE
 % ENABLED AFTER A cear all command]
 if (ismac)
@@ -146,13 +164,13 @@ block = 1;
 while trialIndex <= allTrialsLength;
     %%For all the first group of items load the images into an array
     itemsLeft = {};
-    for i = 1: numel(orderedTrialsArray{trialIndex}{1})
-        tempItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{i}), '.JPG'));
+    for i = 1: numel(orderedTrialsArray{1,trialIndex}{1,1})
+        tempItem = imread(strcat('Image', num2str(orderedTrialsArray{1,trialIndex}{1,1}), '.JPG'));
         itemsLeft = {itemsLeft, tempItem};
     end
     %%For all the second group of items load the images into an array
     itemsRight = {};
-    for i = 1: numel(orderedTrialsArray{trialIndex}{2})
+    for i = 1: numel(orderedTrialsArray{1,trialIndex}{1,2}{1,1})
         tempItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{2}{i}), '.JPG'));
         itemsRight = {itemsRight, tempItem};
     end
@@ -260,7 +278,7 @@ while trialIndex <= allTrialsLength;
     
     %%increment the trial order
     trialOrder = trialOrder + 1;
-end %%END OF WHILE LOOP
+% end %%END OF WHILE LOOP
 %% at the end
 % up at the end of setings we created a file to hold all of our important data
 % Now we will save all of the behavioural data in the same -.mat file

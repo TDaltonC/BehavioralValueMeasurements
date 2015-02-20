@@ -53,7 +53,7 @@ function [ output_args ] = renderGARP( itemsLeft, itemsRight,flip, w )
     %% These are all of the position constants  
 
     centerw = width/2;  % This the center width of the screen
-    centerh = height/2; % THe center of the height of the screen
+    centerh = height/2; % The center of the height of the screen
     eccen =   150;       % This is the eccentricity. Distance from the center to the right edge of the array
     itemw =   70;       % The width of one item in the array
     itemh =   1.5*itemw;% The hight of one item in the array
@@ -278,7 +278,7 @@ if amountOfItem4 >= 3;
     rightPositions = cat(2,rightPositions,  pwr6);
     bottomPositions = cat(2,bottomPositions, ph2);
 end
-% Box10r    
+Box10r    
 if amountOfItem4 >= 4;
     draw = cat(1,draw,item4t);
     leftPositions = cat(2,leftPositions,    pwr7);
