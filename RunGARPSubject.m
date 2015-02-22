@@ -163,17 +163,38 @@ block = 1;
 
 while trialIndex <= allTrialsLength;
     %%For all the first group of items load the images into an array
+    
     itemsLeft = {};
-    for i = 1: numel(orderedTrialsArray{1,trialIndex}{1,1})
-        tempItem = imread(strcat('Image', num2str(orderedTrialsArray{1,trialIndex}{1,1}), '.JPG'));
-        itemsLeft = {itemsLeft, tempItem};
+    %trial = orderedTrialsArray{trialIndex}{1};
+    %left = orderedTrialsArray{trialIndex}{1}{1};
+    %%if there is only one item on the side, then the other box is grey
+    if numel(orderedTrialsArray{trialIndex}{1}{1}) < 2
+        firstItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{1}(1)), '.JPG'));
+        secondItem = imread('grey.jpg');
+    else
+        firstItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{1}(1)), '.JPG'));
+        secondItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{1}(2)), '.JPG'));
     end
-    %%For all the second group of items load the images into an array
+    itemsLeft{1} = firstItem;
+    itemsLeft{2} = secondItem;
+    
     itemsRight = {};
-    for i = 1: numel(orderedTrialsArray{1,trialIndex}{1,2}{1,1})
-        tempItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{2}{i}), '.JPG'));
-        itemsRight = {itemsRight, tempItem};
+    %trial = orderedTrialsArray{trialIndex}{1};
+    %right = orderedTrialsArray{trialIndex}{1}{2}{1};
+    %%if there is only one item on the side, then the other box is grey
+    test = orderedTrialsArray{trialIndex}{1}{2}{1}(1);
+    numb = numel(orderedTrialsArray{trialIndex}{1}{2});
+    if numel(orderedTrialsArray{trialIndex}{1}{2}{1}) < 2
+        firstItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{2}{1}(1)), '.JPG'));
+        secondItem = imread('grey.jpg');
+    else
+        firstItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{2}{1}(1)), '.JPG'));
+        secondItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{2}{1}(2)), '.JPG'));
     end
+    itemsRight{1} = firstItem;
+    itemsRight{2} = secondItem;
+    
+    %%Switch left and right side
     if flipLR(trialIndex) == 0;
         renderGARP(itemsLeft, itemsRight,0,w);
     elseif flipLR(trialIndex) == 1;
