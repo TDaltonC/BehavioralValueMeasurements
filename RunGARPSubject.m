@@ -1,4 +1,4 @@
-function [ output_args ] = RunGARPSubject( subjID, allItems, neighborAmt, runs, w, input)
+function [ output_args ] = RunGARPSubject( subjID, allItems, neighborAmt, runs, blockLength, w, input)
 %Edited by: Spencer Brown 2015 spencelb@usc.edu
 
 %*******Function Args*******
@@ -27,10 +27,13 @@ if exist('allItems','var') == 0;
 end
 
 if exist('neightborAmt','var') == 0;
-    neighborAmt = 2;
+    neighborAmt = 3;
 end
 if exist('runs','var') == 0;
     runs = 2;
+end
+if exist('blockLength','var') == 0;
+   blockLength = 38;
 end
 if exist('input','var') == 0;
     input = 'k'; %keyboard
@@ -79,7 +82,6 @@ end
 %Trial order
 trialOrder = randperm(allTrialsLength);
 %Block Length
-blockLength  = 5;
 rewardTrial = randi(blockLength);
 
 
