@@ -27,13 +27,13 @@ if exist('allItems','var') == 0;
 end
 
 if exist('neightborAmt','var') == 0;
-    neighborAmt = 3;
+    neighborAmt = 5;
 end
 if exist('runs','var') == 0;
     runs = 2;
 end
 if exist('blockLength','var') == 0;
-   blockLength = 38;
+   blockLength = 50;
 end
 if exist('input','var') == 0;
     input = 'k'; %keyboard
