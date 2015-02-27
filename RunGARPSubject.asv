@@ -121,7 +121,6 @@ settings.runs               = runs;
 settings.taskCombiniations  = pairedArray; 
 settings.taskOrder          = trialOrder;
 settings.taskAll            = orderedTrialsArray;
-settings.blockLength        = blockLength;
 
 settings.screenNumber       = screenNumber;
 settings.width              = width;

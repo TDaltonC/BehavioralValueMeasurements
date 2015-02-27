@@ -34,8 +34,8 @@ grey = imread('grey.jpg');
 centerw = width/2;  % This the center width of the screen
 centerh = height/2; % THe center of the height of the screen
 eccen =   150;       % This is the eccentricity. Distance from the center to the right edge of the array
-itemw =   70;       % The width of one item in the array
-itemh =   1.5*itemw;% The hight of one item in the array
+itemw =   80;       % The width of one item in the array
+itemh =   140;% The hight of one item in the array
 gutterw = 20;       % The width of the gutters between the items
 gutterh = 20;       % The hight of the gutters between the items
 
@@ -47,13 +47,13 @@ devLineWidth  = 1;          % The width of the black box in the middle of the sc
 
 leftSideLeftBorder = centerw - eccen;
 leftSideRightBorder = centerw - eccen + itemw;
-rightSideLeftBorder = centerw + eccen;
-rightSideRightBorder = centerw + eccen - itemw;
+rightSideRightBorder = centerw + eccen;
+rightSideLeftBorder = centerw + eccen - itemw;
 
 topItemTopBorder = centerh - gutterh/2 - itemh;
 topItemBottomBorder = centerh - gutterh/2;
-bottomItemTopBorder = centerh + gutterh/2 + itemh;
-bottomItemBottomBorder = centerh + gutterh/2;
+bottomItemBottomBorder = centerh + gutterh/2 + itemh;
+bottomItemTopBorder = centerh + gutterh/2;
 
 leftPositions = [];
 rightPositions = [];
@@ -120,9 +120,9 @@ bottomPositions = cat(2,bottomPositions, bottomItemBottomBorder);
 v = cat(1,leftPositions,topPositions,rightPositions,bottomPositions);
 
    Screen('DrawTextures',w,draw,[],v)
-    Screen('Flip',w);
-    KbWait
-    Screen('CloseAll');
+    %Screen('Flip',w);
+    %KbWait
+    %Screen('CloseAll');
 
 end
 
