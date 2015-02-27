@@ -277,27 +277,29 @@ while trialIndex <= allTrialsLength;
 
 %%STILL IN THE WHILE LOOP
 %% All of this is just of outputting the reward
-        if block == 1 && trialIndex == rewardTrial;
-            left.Item  = itemsLeft;
-            right.Item = itemsRight;
-        end
-
+        if trialIndex == rewardTrial;
+            left.Item  = orderedTrialsArray{trialIndex}{1}{1};
+            right.Item = orderedTrialsArray{trialIndex}{1}{2}{1};
         if behavioral.key(trialIndex) == 'f';
             if switchLR(trialIndex) == 0; %%if the display was flipped, this conditional flips the reward
-                reward.Item   = itemsLeft;
+                reward.Item   = left.Item;
+                reward.Not    = right.Item;
             elseif switchLR(trialIndex) == 1;
-                reward.Item   = itemsRight;
+                reward.Item   = right.Item;
+                reward.Not    = left.Item;
             end
         elseif behavioral.key(trialIndex) == 'j';
             if switchLR(trialIndex) == 0;
-                reward.Item   = itemsRight;
+                reward.Item   = right.Item;
+                reward.Not    = left.Item;
             elseif switchLR(trialIndex) == 1;
-                reward.Item   = itemsLeft;
+                reward.Item   = left.Item;
+                reward.Not    = right.Item;
             end
         end
         rewardrecordname = [settings.recordfolder '/' 'reward_' num2str(subjID) '_' datestr(now,'yyyymmddTHHMMSS') '.mat'];
         save (rewardrecordname, 'reward');
-
+        end
 %%STILL IN WHILL LOOP
 
     if mod(trialIndex,blockLength) == 0; %This throws up the "break" screen between trials.
