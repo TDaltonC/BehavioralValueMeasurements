@@ -7,7 +7,7 @@ Created on Mon Feb  9 15:44:06 2015
 #%% Imports
 import numpy as np
 import pandas as pd
-
+from joblib import Parallel, delayed
 
 #%% Functions
 
@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
 #%% Create DataFrames
 FinalDF = pd.DataFrame( data = {'orderedItems':orderedItems})
-dropingDF = pd.DataFrame( data = {'orderedItems':orderedItems})
+#dropingDF = pd.DataFrame( data = {'orderedItems':orderedItems})
     
 
 #%% Find the distance to every element type
@@ -76,18 +76,17 @@ dropingDF = pd.DataFrame( data = {'orderedItems':orderedItems})
 
 #%%select out 'X'-centered tripplets tightest to loosest
 
-parralellAtepts = 100
+parralellAttepts = 100
 desiredNumberOfTriplets = 10
 
-for i in range(0,parralellAtepts):
+for attempt in range(0,parralellAttepts): # This loop creates 1 set of candidate options
+    dropingDF = pd.DataFrame( data = {'orderedItems':orderedItems})
+    minC, maxC, controlOption = midwayYForRangeofX(dropingDF.orderedItems,'c','a')
+    dropingDF.drop(controlOption,inplace = True) 
     optionsToUse = np.array([controlOption])
-    
-    for i in range(0,desiredNumberOfTriplets):
-        
-            while 0==0:
-#                Remove the midpoint 'a' to make it a control option
-                minC, maxC, controlOption = midwayYForRangeofX(dropingDF.orderedItems,'c','a')
-                dropingDF.drop(controlOption,inplace = True)                
+    for triplet in range(0,desiredNumberOfTriplets): # This loop pulls one triplet 
+#           Remove the midpoint 'a' to make it a control option
+            while 0==0: 
                 
                 dropingDF['closestA'], dropingDF['distancetoA'] = MinDistancetoX_VEC(array = dropingDF.orderedItems,
                                                       index = dropingDF.index,
@@ -118,6 +117,9 @@ for i in range(0,parralellAtepts):
                     # Remove the winners from dateFrame
                     dropingDF.drop(winningItems,inplace = True)
                     break
+                else:
+                    print "oops"
+                
                 
             # Add the index of the new winners to a list of all winners including the contol option
             
@@ -126,6 +128,6 @@ for i in range(0,parralellAtepts):
     # Return the complete list of winners.
         
     optionsToUse = np.sort(optionsToUse)
-    using = pd.DataFrame(data = {'using'+str(i):np.ones(len(optionsToUse))},index = optionsToUse)
+    using = pd.DataFrame(data = {'using'+str(attempt):np.ones(len(optionsToUse))},index = optionsToUse)
     FinalDF = FinalDF.join(using)
 

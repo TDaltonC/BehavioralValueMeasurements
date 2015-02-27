@@ -10,6 +10,8 @@ Symmetric distribution around the fixed option: This keeps the value of value-di
 
 The three distributions should be identical to each other: Keeping the distributions symmetrical controls for non-linear effects of value of brain activity (the value regressor should account for the linear effects of value).
 
+Have fmri data for the elements of each bundle. for example, if [pretzle and popcorn] is going in to the MRI, so should [pretzle] and [popcorn] we need this data to be able to run all of machine learning stuff. If we want to look for the encoding of [pretzle and popcorn] we need to know the encoding of [pretzle] and [popcorn].
+
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Algorithm1 Psudo-Code—
 
