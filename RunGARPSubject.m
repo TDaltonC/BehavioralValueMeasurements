@@ -106,7 +106,8 @@ switchBottom = switchBottom(randperm(allTrialsLength));
 switchTB = cat(1, switchTop, switchBottom);
 
 %% Set up the screen
-
+%No Warnings
+Screen('Preference', 'VisualDebuglevel', 3);
 screenNumber = max(Screen('Screens'));
 [width height] = Screen('WindowSize', screenNumber);
 if exist('w','var') == 0;
@@ -120,6 +121,7 @@ settings.switchLR           = switchLR; %if '0', don't flip. If '1' flip the lef
 settings.switchTB           = switchTB; %if '0', don't flip. If '1' the order of the basket
 settings.neighbors          = neighborAmt;
 settings.runs               = runs;
+settings.taskInitial        = allItems;
 settings.taskCombiniations  = pairedArray; 
 settings.taskOrder          = trialOrder;
 settings.taskAll            = orderedTrialsArray;
@@ -233,7 +235,7 @@ while trialIndex <= allTrialsLength;
     % first wiat .2 secons so that they have time to stop pressing the button.
         WaitSecs(0.25);
     end
-    Screen('Flip',w);
+    [VBLTimestamp StimulusOnsetTime FlipTimestamp] = Screen('Flip',w);
 
     if input  == 'k';% 'k' for for Keyboard
         [behavioral.secs(trialIndex,1), keyCode, behavioral.deltaSecs] = KbWait([], 3);
@@ -265,7 +267,7 @@ while trialIndex <= allTrialsLength;
                 break;
             end
         end
-        behavioral.secs(trialIndex,1) = now;
+        behavioral.secs = GetSecs - StimulusOnsetTime;
         %drawFixation
         drawFixation(w);
 
@@ -307,9 +309,9 @@ while trialIndex <= allTrialsLength;
     if mod(trialIndex,blockLength) == 0; %This throws up the "break" screen between trials.
         drawBreak(w);
         Screen('Flip',w);
-        WaitSecs(20);
+        WaitSecs(2);
         if input == 'k';
-            KbWait([], 3);
+            KbWait([], 2);
         elseif input == 'm';
             GetClicks(w,0);
         elseif input == 't';
@@ -321,6 +323,13 @@ while trialIndex <= allTrialsLength;
                 end
             end
         end
+        Screen('CloseAll');
+        w1 = Screen('OpenWindow', screenNumber,[],[],[],[]);
+        w = w1;
+        recordname = [settings.recordfolder '/' num2str(subjID) '_' datestr(now,'yyyymmddTHHMMSS') '.mat'];
+        % Save the settings (the results are saved later)
+        save (recordname, 'settings');
+        save (recordname, 'behavioral', '-append')
         block = block + 1;
     end
     
