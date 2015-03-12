@@ -29,6 +29,13 @@ end
 black = imread('black.jpg');
 grey = imread('grey.jpg');
 
+%%Account for flip
+if (flip == 1);
+    temp = itemsLeft;
+    itemsLeft = itemsRight;
+    itemsRight = temp;
+end
+
 %% These are all of the position constants  
 
 centerw = width/2;  % This the center width of the screen

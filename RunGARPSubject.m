@@ -20,9 +20,9 @@ end
 if exist('allItems','var') == 0;
     allItems = {};
     allItems{1} = 1;
-    allItems{2} = [2,3]; 
-    allItems{3} = 1;
-    allItems{4} = [2,3];
+    allItems{2} = 2; 
+    allItems{3} = 3;
+    allItems{4} = 4;
 
 end
 
