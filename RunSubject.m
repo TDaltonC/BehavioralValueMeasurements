@@ -1,4 +1,4 @@
-function [ output_args ] = RunGARPSubject( subjID, allItems, neighborAmt, runs, blockLength, w, input)
+function [ output_args ] = RunSubject( subjID, allItems, neighborAmt, runs, blockLength, w, input)
 %Edited by: Spencer Brown 2015 spencelb@usc.edu
 
 %*******Function Args*******
