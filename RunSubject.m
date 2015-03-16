@@ -20,14 +20,16 @@ end
 if exist('allItems','var') == 0;
     allItems = {};
     allItems{1} = 1;
-    allItems{2} = [2,3]; 
-    allItems{3} = 1;
-    allItems{4} = [2,3];
+    allItems{2} = 2; 
+    allItems{3} = 3;
+    allItems{4} = 4;
+    allItems{5} = 5;
+    allItems{6} = 6;
 
 end
 
 if exist('neightborAmt','var') == 0;
-    neighborAmt = 5;
+    neighborAmt = 2;
 end
 if exist('runs','var') == 0;
     runs = 2;
@@ -121,7 +123,7 @@ settings.switchLR           = switchLR; %if '0', don't flip. If '1' flip the lef
 settings.switchTB           = switchTB; %if '0', don't flip. If '1' the order of the basket
 settings.neighbors          = neighborAmt;
 settings.runs               = runs;
-settings.taskInitial        = allItems;
+settings.allOptions         = allItems;
 settings.taskCombiniations  = pairedArray; 
 settings.taskOrder          = trialOrder;
 settings.taskAll            = orderedTrialsArray;
@@ -184,11 +186,11 @@ while trialIndex <= allTrialsLength;
     %left = orderedTrialsArray{trialIndex}{1}{1};
     %%if there is only one item on the side, then the other box is grey
     if numel(orderedTrialsArray{trialIndex}{1}{1}) < 2
-        firstItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{1}(1)), '.JPG'));
+        firstItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{1}(1)), '.jpg'));
         secondItem = imread('grey.jpg');
     else
-        firstItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{1}(1)), '.JPG'));
-        secondItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{1}(2)), '.JPG'));
+        firstItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{1}(1)), '.jpg'));
+        secondItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{1}(2)), '.jpg'));
     end
     %Switch the top and the bottom
     if switchTB(1, trialIndex) == 0
@@ -206,11 +208,11 @@ while trialIndex <= allTrialsLength;
     test = orderedTrialsArray{trialIndex}{1}{2}{1}(1);
     numb = numel(orderedTrialsArray{trialIndex}{1}{2});
     if numel(orderedTrialsArray{trialIndex}{1}{2}{1}) < 2
-        firstItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{2}{1}(1)), '.JPG'));
+        firstItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{2}{1}(1)), '.jpg'));
         secondItem = imread('grey.jpg');
     else
-        firstItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{2}{1}(1)), '.JPG'));
-        secondItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{2}{1}(2)), '.JPG'));
+        firstItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{2}{1}(1)), '.jpg'));
+        secondItem = imread(strcat('Image', num2str(orderedTrialsArray{trialIndex}{1}{2}{1}(2)), '.jpg'));
     end
     
     if switchTB(2,trialIndex) == 0
@@ -223,9 +225,9 @@ while trialIndex <= allTrialsLength;
     
     %%Switch left and right side
     if switchLR(trialIndex) == 0;
-        renderGARP(itemsLeft, itemsRight,0,w);
+        drawChoice(itemsLeft, itemsRight,w);
     elseif switchLR(trialIndex) == 1;
-        renderGARP(itemsLeft, itemsRight,1,w);
+        drawChoice(itemsRight, itemsLeft,w);
     end
     
     % Draw aka "flip"   
@@ -343,7 +345,7 @@ end%%END OF WHILE LOOP
 save (recordname, 'behavioral', '-append')
 drawStop(w);
 Screen('Flip',w);
-WaitSecs(20);
+% WaitSecs(20);
 if input == 'k';
     KbWait([], 3);
 elseif input == 'm';

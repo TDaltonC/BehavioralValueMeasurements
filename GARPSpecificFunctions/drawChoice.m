@@ -1,4 +1,4 @@
-function [ output_args ] = renderGARP( itemsLeft, itemsRight,flip, w )
+function [ output_args ] = drawChoice( itemsLeft, itemsRight, w)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 screenNumber = max(Screen('Screens'));
@@ -15,10 +15,6 @@ end
 if exist('itemsRight','var') == 0;
     itemsRight{1} = 0;
     itemsRight{2} = imread('cheese.jpg');
-end
-
-if exist('flip','var') == 0; % If 'itemitemsOnLeft' doesn't exist  . . . 
-    flip = 0;                % Create it and set it equal to 3 (default)
 end
 
 if exist('w','var') == 0;
