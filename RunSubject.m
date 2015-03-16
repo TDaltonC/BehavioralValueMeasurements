@@ -23,11 +23,8 @@ if exist('allItems','var') == 0;
     allItems{2} = 2; 
     allItems{3} = 3;
     allItems{4} = 4;
-<<<<<<< HEAD:RunSubject.m
     allItems{5} = 5;
     allItems{6} = 6;
-=======
->>>>>>> origin/master:RunGARPSubject.m
 
 end
 
