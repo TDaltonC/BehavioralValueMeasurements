@@ -1,4 +1,4 @@
-function [ output_args ] = RunSubject( subjID, allItems, neighborAmt, runs, blockLength, w, input)
+function [ output_args ] = RunSubject( subjID, allOptions, neighborAmt, runs, blockLength, w, input)
 %Edited by: Spencer Brown 2015 spencelb@usc.edu
 
 %*******Function Args*******
@@ -18,18 +18,19 @@ if exist('subjID','var') == 0;
     subjID = 1;
 end
 if exist('allItems','var') == 0;
-    allItems = {};
-    allItems{1} = 1;
-    allItems{2} = 2; 
-    allItems{3} = 3;
-    allItems{4} = 4;
-    allItems{5} = 5;
-    allItems{6} = 6;
-
+    allOptions = {
+%         [30,30],[30,29],30,[29,29],[29,28],29,[28,28],[28,27],28,[27,27],[27,26],27,...
+%         [26,26],[26,25],26,[25,25],[25,24],25,[24,24],[24,23],24,[23,23],[23,22],23,...
+%         [22,22],[22,21],22,[21,21],[21,20],21,[20,20],[20,19],20,[19,19],[19,18],19,...
+%         [18,18],[18,17],18,[17,17],[17,16],17,[16,16],[16,15],16,[15,15],[15,14],15,...
+%         [14,14],[14,13],14,[13,13],[13,12],13,[12,12],[12,11],12,[11,11],[11,10],11,...
+%         [10,10],[10, 9],10,[ 9, 9],[ 9, 8], 9,[ 8, 8],[ 8, 7], 8,[ 7, 7],[ 7, 6], 7,...
+        [ 6, 6],[ 6, 5], 6,[ 5, 5],[ 5, 4], 5,[ 4, 4],[ 4, 3], 4,[ 3, 3],[ 3, 2], 3,...
+        [ 2, 2],[ 2, 1], 2,[ 1, 1], 1};
 end
 
 if exist('neightborAmt','var') == 0;
-    neighborAmt = 2;
+    neighborAmt = 5;
 end
 if exist('runs','var') == 0;
     runs = 2;
@@ -38,7 +39,7 @@ if exist('blockLength','var') == 0;
    blockLength = 50;
 end
 if exist('input','var') == 0;
-    input = 'k'; %keyboard
+    input = 't'; %tablet
     Screen('Preference', 'SkipSyncTests', 1 );
 end
 if input == 't'; % on a tablet we need to disable the screen synch test becuase . . .  who knows
@@ -123,7 +124,7 @@ settings.switchLR           = switchLR; %if '0', don't flip. If '1' flip the lef
 settings.switchTB           = switchTB; %if '0', don't flip. If '1' the order of the basket
 settings.neighbors          = neighborAmt;
 settings.runs               = runs;
-settings.allOptions         = allItems;
+settings.allOptions         = allOptions;
 settings.taskCombiniations  = pairedArray; 
 settings.taskOrder          = trialOrder;
 settings.taskAll            = orderedTrialsArray;
@@ -240,14 +241,15 @@ while trialIndex <= allTrialsLength;
     [VBLTimestamp StimulusOnsetTime FlipTimestamp] = Screen('Flip',w);
 
     if input  == 'k';% 'k' for for Keyboard
-        [behavioral.secs(trialIndex,1), keyCode, behavioral.deltaSecs] = KbWait([], 3);
-
+        [pressTime, keyCode, behavioral.deltaSecs] = KbWait([], 3);
+        
         %drawFixation
         drawFixation(w);
 
         %If a key is pressed, record that key press in the behavioral record.
         if sum(keyCode) == 1;
             behavioral.key(trialIndex,1) = KbName(keyCode);
+            behavioral.secs(trialIndex,1) = GetSecs - StimulusOnsetTime;
         end
     elseif input == 'm'; % 'm' is for mouse
         [clicks,x,y,whichButton] = GetClicks(w,0);
@@ -269,7 +271,7 @@ while trialIndex <= allTrialsLength;
                 break;
             end
         end
-        behavioral.secs = GetSecs - StimulusOnsetTime;
+        behavioral.secs(trialIndex,1) = GetSecs - StimulusOnsetTime;
         %drawFixation
         drawFixation(w);
 

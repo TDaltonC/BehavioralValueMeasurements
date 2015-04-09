@@ -15,13 +15,13 @@ responses = pd.DataFrame.from_csv('../records/responses.csv', index_col = 'index
 
 #%%
 sb.pairplot(options[['elicitedRank','valueLBUBSUM','valueLBUB','valueLB','value']], 
-            kind = 'reg')
-#plt.clf()
-#plt.cla()
+#            kind = 'reg'
+            )
+
 #%% Heatmaps
 
 # Reduce to only singleton options
-responses_Singleton = responses[(responses.opt1item2 == 0) | (responses.opt2item2 == 0)]    
+responses_Singleton = responses[(responses.opt1item2 == 0) & (responses.opt2item2 == 0)]    
 heatMapData_Singleton = pd.pivot_table(responses_Singleton,index='opt2Code', columns='opt1Code', values='chosenOpt')
 plt.figure(figsize=(18, 12))
 sb.heatmap(heatMapData_Singleton,square=True,mask=heatMapData_Singleton.isnull())
@@ -33,4 +33,9 @@ mask=heatMapData.isnull()
 plt.figure(figsize=(18, 12))
 sb.heatmap(heatMapData,square=True,mask=heatMapData.isnull())
 
+plt.figure()
+sb.jointplot('elicitedRank','value',options)
 
+#%%
+
+options.sort(['value'],inplace = True)

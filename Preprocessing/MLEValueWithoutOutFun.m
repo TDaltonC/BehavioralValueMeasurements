@@ -23,8 +23,7 @@ function [ cost_output,cost_max,value_output,bestValue,bestLL] = MLEValue(option
 % If an input is not provided, then we make it an empty array, if one is 
 % provided, we vectorize it as needed. 
 options = optimset('Algorithm','interior-point');
-options.MaxFunEvals = 1000000;
-
+options.MaxFunEvals = 100000;
 
 optCount = length(unique([optionL,optionR]));
 
@@ -96,37 +95,12 @@ probFcn = zeros(numberObs,1);
 % fmincon minimizes instead of maximizing. By minimizing the negative of
 % the PDF we are essentially maximizing
 for n = 1:numberObs 
-probFcn(n) = (-1)*(choices(n)* (log(     1/(1 + exp(-value(optionL(n))*(1) +value(optionR(n))*(1))))) + ...
-                  (1-choices(n))*(log(1 - (1/(1 + exp(-value(optionL(n))*(1) +value(optionR(n))*(1)))))));
+probFcn(n) = (-1)*(choices(n)*(log(1/(1 + exp(-value(optionL(n))*(1) -value(optionR(n))*(1))))) + ...
+        (1-choices(n))*(log(1 - (1/(1 + exp(-value(optionR(n))*(1) -value(optionL(n))*(1)))))));
 end
 
 cost = sum(probFcn(1:numberObs));
 
 end
 
-
-function stop = outfun(x,optimValues,state)
-stop = false;
- 
-   switch state
-       case 'init'
-           hold on
-       case 'iter'
-           % Concatenate current point and objective function
-           % value with history. x must be a row vector.
-           history.fval = [history.fval; optimValues.fval];
-           history.x = [history.x; x];
-           % Concatenate current search direction with 
-%            % searchdir.
-%            searchdir = [searchdir;...
-%                         optimValues.searchdirection'];
-           plot(x(1),x(2),'o');
-           % Label points with iteration number.
-           % Add .15 to x(1) to separate label from plotted 'o'
-           text(x(1)+.15,x(2),num2str(optimValues.iteration));
-       case 'done'
-           hold off
-       otherwise
-   end
-end
 

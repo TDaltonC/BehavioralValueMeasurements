@@ -1,14 +1,14 @@
 cd('/Users/Dalton/Documents/Projects/BundledOptionsExp/BehavioralValueMeasurements')
-load('/Users/Dalton/Documents/Projects/BundledOptionsExp/BehavioralValueMeasurements/records/a03_20150227T152251.mat')
+load('/Users/Dalton/Documents/Projects/BundledOptionsExp/BehavioralValueMeasurements/records/1_20150106T201419.mat')
 
 %% Options DataFame
-elicitedRank = 1:numel(settings.allItems);
+elicitedRank = 1:numel(settings.allOptions);
 for i = elicitedRank
-    item1(i) = settings.allItems{1, i}(1);
+    item1(i) = settings.allOptions{1, i}(1);
     try
-        item2(i) = settings.allItems{1, i}(2);
+        item2(i) = settings.allOptions{1, i}(2);
         itemCount(i) = 2;
-        if settings.allItems{1, i}(2) == settings.allItems{1, i}(1)
+        if settings.allOptions{1, i}(2) == settings.allOptions{1, i}(1)
             type(i) = 2;
         else
             type(i) = 3;
@@ -19,7 +19,7 @@ for i = elicitedRank
         type(i) = 1;
     end
 end
-optSID = cell(numel(settings.allItems),1);
+optSID = cell(numel(settings.allOptions),1);
 optSID(:) = {settings.subjID};
 
 %% Responses DataFrame
@@ -65,9 +65,9 @@ for i = 1:numel(choiceLR)
         end
     elseif choiceLR(i) == 'j'
         if switchLR(i) == 0
-            chosenOpt(i) = 1;
-        elseif switchLR(i) == 1
             chosenOpt(i) = 2;
+        elseif switchLR(i) == 1
+            chosenOpt(i) = 1;
         end
     end
 end
@@ -88,7 +88,7 @@ options = table(   optSID  ,elicitedRank' ,itemCount' ,type' ,item1' ,item2', va
     'VariableNames',{'SID' 'elicitedRank' 'itemCount' 'type' 'item1' 'item2','valueLBUBSUM','valueLBUB','valueLB','value'});
 writetable(options,'options.csv');
 
-responses = table(  [1:length(reactionTime)]',  respSID  ,reactionTime  ,opt1item1' ,opt1item2' ,opt2item1' ,opt2item2' ,switchLR' ,switchTB1' ,switchTB2', opt1Code', opt2Code', chosenOpt',...
+responses = table(  [1:length(settings.taskAll)]',  respSID  ,reactionTime  ,opt1item1' ,opt1item2' ,opt2item1' ,opt2item2' ,switchLR' ,switchTB1' ,switchTB2', opt1Code', opt2Code', chosenOpt',...
     'VariableNames',{ 'index',                'respSID' 'reactionTime' 'opt1item1' 'opt1item2' 'opt2item1' 'opt2item2' 'switchLR' 'switchTB1' 'switchTB2' 'opt1Code' 'opt2Code'  'chosenOpt'});
 writetable(responses,'responses.csv');
 
