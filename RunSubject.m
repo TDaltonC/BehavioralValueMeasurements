@@ -44,12 +44,16 @@ if exist('input','var') == 0;
 end
 if input == 't'; % on a tablet we need to disable the screen synch test becuase . . .  who knows
     Screen('preference', 'SkipSyncTests',1);
+    addpath(genpath('D:/BehavioralValueMeasurements'))
 end
+
+
+
 %rng(subjID);
 
 %% **Create the pairs
 %set the item to new variable
-initItems = allItems;
+initItems = allOptions;
 initLength = numel(initItems);
 %determine the new array length
 pairedLength = (initLength * neighborAmt)-((neighborAmt * (neighborAmt + 1))/2);

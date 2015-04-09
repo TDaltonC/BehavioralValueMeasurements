@@ -96,8 +96,8 @@ probFcn = zeros(numberObs,1);
 % fmincon minimizes instead of maximizing. By minimizing the negative of
 % the PDF we are essentially maximizing
 for n = 1:numberObs 
-probFcn(n) = (-1)*(choices(n)* (log(     1/(1 + exp(-value(optionL(n))*(1) +value(optionR(n))*(1))))) + ...
-                  (1-choices(n))*(log(1 - (1/(1 + exp(-value(optionL(n))*(1) +value(optionR(n))*(1)))))));
+probFcn(n) = (-1)*(choices(n)* (log(     1/(1 + exp(value(optionL(n))*(1) -value(optionR(n))*(1))))) + ...
+                  (1-choices(n))*(log(1 - (1/(1 + exp(value(optionL(n))*(1) -value(optionR(n))*(1)))))));
 end
 
 cost = sum(probFcn(1:numberObs));
