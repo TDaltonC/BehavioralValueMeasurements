@@ -17,7 +17,7 @@ function [ output_args ] = RunSubject( subjID, allOptions, neighborAmt, runs, bl
 if exist('subjID','var') == 0;
     subjID = 1;
 end
-if exist('allItems','var') == 0;
+if exist('allOptions','var') == 0;
     allOptions = {
 %         [30,30],[30,29],30,[29,29],[29,28],29,[28,28],[28,27],28,[27,27],[27,26],27,...
 %         [26,26],[26,25],26,[25,25],[25,24],25,[24,24],[24,23],24,[23,23],[23,22],23,...

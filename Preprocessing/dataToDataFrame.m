@@ -1,5 +1,5 @@
 cd('/Users/Dalton/Documents/Projects/BundledOptionsExp/BehavioralValueMeasurements')
-load('/Users/Dalton/Documents/Projects/BundledOptionsExp/BehavioralValueMeasurements/records/1_20150129T114621.mat')
+load('/Users/Dalton/Documents/Projects/BundledOptionsExp/BehavioralValueMeasurements/records/a10_20150410T145349.mat')
 
 %% Options DataFame
 elicitedRank = 1:numel(settings.allOptions);
